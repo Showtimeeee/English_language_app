@@ -1,16 +1,10 @@
 import sqlite3
 
-connection = sqlite3.connect('db_english.db')
-cursor = connection.cursor()
-
 
 def create_table(table='english'):
     create_table_query = f"""CREATE TABLE IF NOT EXISTS {table} (word text, translate text)"""
     cursor.execute(create_table_query)
     return table
-
-
-# create_table()
 
 
 # вставляет данные
@@ -20,9 +14,6 @@ def insert_data():
     translate = input(f'Введите перевод слова {word}: ')
     cursor.executemany("INSERT INTO english VALUES(?, ?)", [(word, translate)])
     connection.commit()
-
-
-# insert_data()
 
 
 # функция для просмотра таблицы
@@ -35,31 +26,39 @@ def show_table(table):
 
 # редактировать запись
 def edit_data():
-    # edit_data_query = """UPDATE english SET translate = 'five' WHERE word ='five' """
-    edit_data_query = """UPDATE english SET translate = 'принуждать' WHERE word ='force' """
-    cursor.execute(edit_data_query)
+    edit_dat = input('Исправить слово или перевод? w - англ слово, t - перевод ')
+    a = input('Введите слово для редактирования: ')
+    b = input('Новое слово: ')
+
+    numb = (b, a)
+    numb1 = (a, b)
+
+    if edit_dat in ['w', 'W', 'Ц', 'ц']:
+        edit_data_query = """UPDATE english SET translate = ? WHERE word = ? """
+        cursor.execute(edit_data_query, numb)
+
+    if edit_dat in ['t', 'T']:
+        edit_data_query = """UPDATE english SET word = ? WHERE translate = ? """
+        cursor.execute(edit_data_query, numb)
+
     connection.commit()
-
-
-# edit_data()
-# функция с аргументом функции, возвращает table
 
 
 # удаляет данные из таблицы
 def delete_data():
-    delete_data_query = "DELETE FROM english WHERE word='force'"
+    del_data = input('Какое слово удалить?: ')
+    delete_data_query = f"DELETE FROM english WHERE word= '{del_data}'"
     cursor.execute(delete_data_query)
     connection.commit()
-
-
-#delete_data()
-#show_table(create_table())
+    print('')
+    print(f'Запись {del_data} удалена')
+    print('')
 
 
 #
 def main():
     while True:
-        query = input('i - создать запись, s - посмотреть таблицу, q - выход: ')
+        query = input('i - создать запись, s - посмотреть таблицу, u - обновить данные, d - удалить запись, q - выход: ')
         print('')
         if query in ['q', 'й', 'Q', 'Й']:
             print('Программа завершена')
@@ -70,8 +69,16 @@ def main():
         if query in ['i', 'I', 'ш', 'Ш']:
             insert_data()
         print('')
+        if query in ['u', 'U', 'г', 'Г']:
+            edit_data()
+        if query in ['d', 'D', 'в', 'В']:
+            delete_data()
 
 
-main()
+if __name__ == '__main__':
+    database = 'db_english.db'
+    connection = sqlite3.connect(database)
+    cursor = connection.cursor()
+    main()
 
 
