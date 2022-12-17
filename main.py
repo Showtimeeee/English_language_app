@@ -3,13 +3,12 @@
 import re
 import os
 
-# создание текстового док, если файла нет то создать
+# проверка на наличие файла если нет то создать
 if not os.path.exists('words.txt'):
     open('words.txt', 'w')
 
 while True:
-    # lst_difice = []
-    # lst_clear = []
+
     word = input('Введите слово на английском или нажмите Q: ')
     if word in ['q', 'й', 'Q', 'Й']:
         print('Программа завершена')
@@ -21,13 +20,8 @@ while True:
         with open('words.txt', 'r', encoding='utf-8') as read_txt:
             dct = read_txt.readlines()
 
-            # for string_txt in dct:
-            #     lst_difice.append(string_txt.strip('-'))
-            # for j in lst_difice:
-            #     lst_clear.append(j[0].split('-'))
-            # print(lst_clear)
-            # fix
             lst_clear = [j[0].strip() for j in (i.split('-') for i in dct)]
+            
             # проверка на повтор
             if word in lst_clear:
                 print(f'Слово {word} уже существуетв базе')
