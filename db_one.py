@@ -30,11 +30,12 @@ def show_table(table):
     # запрос для просмотра тыблицы в бд
     for i in cursor.execute(f"SELECT * FROM {table}"):
         print(i[0] + ' - ' + i[1])
+    print(len(table))
 
 
 # редактировать запись
 def edit_data():
-    #edit_data_query = """UPDATE english SET translate = 'five' WHERE word ='five' """
+    # edit_data_query = """UPDATE english SET translate = 'five' WHERE word ='five' """
     edit_data_query = """UPDATE english SET translate = 'принуждать' WHERE word ='force' """
     cursor.execute(edit_data_query)
     connection.commit()
@@ -51,7 +52,26 @@ def delete_data():
     connection.commit()
 
 
-delete_data()
-show_table(create_table())
+#delete_data()
+#show_table(create_table())
+
+
+#
+def main():
+    while True:
+        query = input('i - создать запись, s - посмотреть таблицу, q - выход: ')
+        print('')
+        if query in ['q', 'й', 'Q', 'Й']:
+            print('Программа завершена')
+            break
+        if query in ['s', 'S', 'ы', 'Ы']:
+            show_table(create_table())
+            print('*' * 20)
+        if query in ['i', 'I', 'ш', 'Ш']:
+            insert_data()
+        print('')
+
+
+main()
 
 
